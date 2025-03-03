@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ test.title }}</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <h3>{{ test.title }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Задание</th>
+                        <th>Ответ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for field in form %}
+                    <tr class="question-row {% if forloop.counter > 1 %}hidden{% endif %}">
+                        <td class="number">
+                            <b>{{ forloop.counter }}</b>
+                        </td>
+                        <td>
+                            <!-- ({{ field.label.id }})  -->
+                            {{ field.label.text|linebreaksbr }}
+                            {% if field.label.file %}
+                                <p>
+                                    <a href="{{ field.label.file }}">Файл</a>
+                                </p>
+                            {% endif %}
+                        </td>
+                        <td class="answer">{{ field }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="footer_test">
+            <button type="button" id="prevButton" style="display: none;">Назад</button>
+            <button type="button" id="nextButton">Далее</button>
+            <button type="submit" style="display: none;" id="submitButton">Отправить ответы</button>
+        </div>
+    </form>
+
+    <script>
+        let currentQuestion = 0; // Индекс текущего вопроса
+        const questions = document.querySelectorAll('.question-row'); // Получаем все строки с вопросами
+        const nextButton = document.getElementById('nextButton');
+        const prevButton = document.getElementById('prevButton');
+        const submitButton = document.getElementById('submitButton');
+
+        // Функция для обновления видимости кнопок
+        function updateButtons() {
+            prevButton.style.display = currentQuestion > 0 ? 'inline' : 'none';
+            nextButton.style.display = currentQuestion < questions.length - 1 ? 'inline' : 'none';
+            submitButton.style.display = currentQuestion === questions.length - 1 ? 'inline' : 'none';
+        }
+
+        nextButton.addEventListener('click', function () {
+            // Скрываем текущий вопрос
+            if (currentQuestion < questions.length) {
+                questions[currentQuestion].classList.add('hidden');
+                currentQuestion++;
+            }
+
+            // Показываем следующий вопрос
+            if (currentQuestion < questions.length) {
+                questions[currentQuestion].classList.remove('hidden');
+            }
+
+            updateButtons(); // Обновляем видимость кнопок
+        });
+
+        prevButton.addEventListener('click', function () {
+            // Скрываем текущий вопрос
+            if (currentQuestion > 0) {
+                questions[currentQuestion].classList.add('hidden');
+                currentQuestion--;
+            }
+
+            // Показываем предыдущий вопрос
+            if (currentQuestion >= 0) {
+                questions[currentQuestion].classList.remove('hidden');
+            }
+
+            updateButtons(); // Обновляем видимость кнопок
+        });
+
+        // Инициализация кнопок
+        updateButtons();
+        
+    </script>
+</body>
+
+</html>

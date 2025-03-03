@@ -1,0 +1,30 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Результаты тестирования{% endblock %}
+
+{% block content %}
+
+<h3>Список тестовых заданий</h3>
+<table>
+    <tbody>
+        {% for test in tests %}
+            <tr>
+                <td>
+                    {% if test.repeated_answer and test.id in status_testing_for_user %}
+                        <a href="{% url 'take_test' test.id %}">{{ test.title }}</a>
+                </td>
+                <td>
+                    Открыт
+                    {% else %}
+                    {{ test.title }}
+                </td>
+                <td>
+                        Закрыт
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

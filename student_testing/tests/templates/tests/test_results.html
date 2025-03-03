@@ -1,0 +1,26 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Результаты теста{% endblock %}
+
+{% block content %}
+
+<h3>Результаты теста: {{ response.test.title }}</h3>
+<p>Учащийся: {{ response.student.username }}</p>
+
+<div class="result">
+    <h2>Ваши ответы:</h2>
+    {% for question, answer in response.answers.items %}
+        <div class="question">
+            <strong>Вопрос:</strong> {{ question }}<br>
+            <strong>Ваш ответ:</strong> {{ answer }}<br>
+        </div>
+    {% empty %}
+        <p>Вы не ответили на вопросы.</p>
+    {% endfor %}
+    <strong>Набрано:</strong> {{ response.score }}<br>
+</div>
+
+<a href="{% url 'test_list' %}">Вернуться к списку тестов</a>
+
+
+{% endblock %}

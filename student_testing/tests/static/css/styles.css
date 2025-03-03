@@ -1,0 +1,103 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: auto;
+    margin-bottom: 20px;
+    
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    /* height: 50px; */
+}
+
+td a {
+    text-decoration: none;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.number {
+    text-align: center;
+    width: 5%;
+}
+
+.answer {
+    text-align: center;
+    width: 20%;
+}
+
+.hidden {
+    display: none;
+    /* Скрыть элементы с этим классом */
+}
+
+.header_test {
+    text-align: center;
+}
+
+.footer_test {
+    text-align: center;
+}
+
+
+nav {
+    background-color: #8f8b8b;
+    color: white;
+    padding: 8px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    /* text-decoration: underline; */
+    background-color: #b7b0b0;
+}
+
+.left_nav_block {
+    margin-left: 2%;
+    margin-right: 60%;
+}
+
+.right_nav_block {
+    margin-right: 2%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h1 {
+    color: #ddcece;
+}
+.result {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.question {
+    margin-bottom: 10px;
+}
+
+.div_forms_regs {
+    padding: 5px;
+}

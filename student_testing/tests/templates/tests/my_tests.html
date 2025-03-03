@@ -1,0 +1,43 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Результаты теста{% endblock %}
+
+{% block content %}
+
+
+<h3>Мои пройденные тесты</h3>
+
+{% if results %}
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Тест</th>
+            <th>Балл</th>
+            <th>Дата тестирования</th>
+        </tr>
+    </thead>
+    {% for result in results %}
+    <tr>
+        <td>
+            {{ forloop.counter }}
+        </td>
+        <td>
+            <a href="{% url 'test_students_results' result.test_id %}">{{ result.test.title }}</a>
+        </td>
+        <td>
+            {{ result.score }}
+        </td>
+        <td>
+            {{ result.time_answer }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>У вас нет пройденных тестов.</p>
+
+{% endif %}
+
+
+{% endblock %}

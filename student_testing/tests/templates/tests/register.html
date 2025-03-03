@@ -1,0 +1,23 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+<h3>Регистрация</h3>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            <div class="div_forms_regs">
+                {{ field.label }}
+            </div>
+            <div class="div_forms_regs">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <button type="submit">Зарегистрироваться</button>
+</form>
+
+{% endblock %}

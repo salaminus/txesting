@@ -1,0 +1,24 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+
+<h2>Вход</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            <div class="div_forms_regs">
+                {{ field.label }}
+            </div>
+            <div class="div_forms_regs">
+                {{ field }}
+            </div>
+
+        </div>
+    {% endfor %}
+    <button type="submit">Войти</button>
+</form>
+
+{% endblock %}

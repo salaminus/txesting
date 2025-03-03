@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система тестирования{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'test_list' %}">Тесты</a></li>
+                <li class="left_nav_block"><a href="{% url 'my_tests' %}">Мои результаты</a></li>
+                <li class="right_nav_block">{{ user.username }}</li>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <li class="right_nav_block"><a href="{% url 'register' %}">Регистрация</a></li>
+                <li class="right_nav_block"><a href="{% url 'login' %}">Вход</a></li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>
