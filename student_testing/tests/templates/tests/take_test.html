@@ -15,7 +15,7 @@
     <form method="post">
         {% csrf_token %}
         <div>
-            <table>
+            <table id="table_total">
                 <thead>
                     <tr>
                         <th>Номер</th>
@@ -31,7 +31,7 @@
                         </td>
                         <td>
                             <!-- ({{ field.label.id }})  -->
-                            {{ field.label.text|linebreaksbr }}
+                            {{ field.label.text|safe }}
                             {% if field.label.file %}
                                 <p>
                                     <a href="{{ field.label.file }}">Файл</a>

@@ -9,15 +9,28 @@
 
 <div class="result">
     <h2>Ваши ответы:</h2>
-    {% for question, answer in response.answers.items %}
-        <div class="question">
-            <strong>Вопрос:</strong> {{ question }}<br>
-            <strong>Ваш ответ:</strong> {{ answer }}<br>
-        </div>
-    {% empty %}
-        <p>Вы не ответили на вопросы.</p>
-    {% endfor %}
-    <strong>Набрано:</strong> {{ response.score }}<br>
+    <table id="table_total">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Балл</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question, right_answer in response.right_answer.items %}
+                <tr align="center">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{% if right_answer %}
+                            <b class="b_green">1</b>
+                        {% else %}
+                            <b class="b_red">0</b>
+                        {% endif %}
+                    </td> 
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <strong>Набрано:</strong> {{ response.score }} <br>
 </div>
 
 <a href="{% url 'test_list' %}">Вернуться к списку тестов</a>

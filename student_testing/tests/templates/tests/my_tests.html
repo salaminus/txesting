@@ -4,39 +4,63 @@
 
 {% block content %}
 
-
-<h3>Мои пройденные тесты</h3>
+{% if user.is_superuser %}
+    <h3>Пройденные тесты</h3>
+{% else %}
+    <h3>Мои пройденные тесты</h3>
+{% endif %}
 
 {% if results %}
-<table>
+<table id="table_total">
     <thead>
         <tr>
-            <th>№</th>
-            <th>Тест</th>
-            <th>Балл</th>
-            <th>Дата тестирования</th>
+            <th style="width: 3%">№</th>
+            <th style="width: 30%;">Тест</th>
+            {% if not user.is_superuser %}
+                <th style="width: 51%">Баллы</th>
+            {% endif %}
+            <th style="width: 6%">Всего</th>
+            <th style="width: 10%">Дата тестирования</th>
         </tr>
     </thead>
     {% for result in results %}
     <tr>
-        <td>
+        <td align="center">
             {{ forloop.counter }}
         </td>
         <td>
-            <a href="{% url 'test_students_results' result.test_id %}">{{ result.test.title }}</a>
+            {% if user.is_superuser  %}
+                <a href="{% url 'test_students_results' result.test_id %}">{{ result.test.title }}</a>
+            {% else %}
+                {{ result.test.title }}
+            {% endif %}
         </td>
-        <td>
+        {% if not user.is_superuser %}
+            <td>
+                <table style="margin-bottom: 0%;">
+                    <tbody>
+                        {% for key, value in result.right_answer.items %}
+                            {% if value %}
+                                <td style="color: green; text-align: center;"><b>{{ forloop.counter }}</b></td>
+                            {% else %}
+                                <td style="color: red; text-align: center;">{{ forloop.counter }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        {% endif %}
+        <td align="center">
             {{ result.score }}
         </td>
-        <td>
-            {{ result.time_answer }}
+        <td align="center">
+            {{ result.time_answer|date:"d-m-Y H:i" }}
         </td>
     </tr>
     {% endfor %}
 </table>
 {% else %}
-<p>У вас нет пройденных тестов.</p>
-
+    <p>У вас нет пройденных тестов.</p>
 {% endif %}
 
 

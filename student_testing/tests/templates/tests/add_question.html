@@ -1,0 +1,44 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Добавление вопроса{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.css">
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<h3>Добавить вопрос к тесту: {{ test.name }}</h3>
+
+<form method="post">
+    {% csrf_token %}
+    <table id="table_total">
+        {% for field in question_form %}
+            <tr>
+                <td style="width: 10%;">
+                    {{ field.label }}
+                </td>
+                <td>
+                    {{ field }}
+                </td>
+            </tr>
+        {% endfor %}        
+    </table>
+    <button type="submit">Добавить вопрос</button>
+</form>
+
+<a href="{% url 'edit_test' test.id %}">Назад к тесту</a>
+
+    <script>
+        // Инициализация CKEditor для всех текстовых полей в форме
+        document.addEventListener('DOMContentLoaded', function () {
+            // Находим все текстовые поля в форме
+            var textareas = document.querySelectorAll('textarea');
+
+            // Инициализируем CKEditor для каждого текстового поля
+            textareas.forEach(function (textarea) {
+                CKEDITOR.replace(textarea);
+            });
+        });
+    </script>
+
+
+{% endblock %}

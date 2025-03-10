@@ -1,0 +1,92 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Редактор вопросов{% endblock %}
+
+{% block content %}
+
+<h3>Доступные вопросы</h3>
+
+<table id="table_total">
+    <thead>
+        <tr>
+            <th style="width: 3%">№</th>
+            <th style="width: 55%;">Содержание</th>
+            <th style="width: 10%;">
+                <label for="topicFilter">Тема</label>
+                <select id="topicFilter">
+                    <option value="">Все</option>
+                    {% for top in topics %}
+                        <option value="{{ top.0 }}">{{ top.0 }}</option>
+                    {% endfor %}
+                </select>
+            </th>
+            <th style="width: 5%">Тип ответа</th>
+            <th style="width: 5%">
+                <label for="classFilter">Класс</label>
+                <select id="classFilter">
+                    <option value="">Все</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+            </th>
+            <th style="width: 15%;">Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for quest in data %}
+            <tr data-class="{{ quest.klass_destination }}" data-topic="{{ quest.topics }}">
+                <td align="center">
+                    {{ forloop.counter }}
+                </td>
+                <td>
+                    {{ quest }}
+                </td>
+                <td align="center">
+                    {{ quest.topics }}
+                </td>
+                <td align="center">
+                    {{ quest.question_type }}
+                </td>
+                <td align="center">
+                    {{ quest.klass_destination }}
+                </td>
+                <td align="center">
+                    {% csrf_token %}
+                    <a href="{% url 'edit_question' quest.id %}">Редактировать</a> /
+                    <a href="{% url 'delete_question' quest.id %}">Удалить</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<script>
+    // Функция для фильтрации таблицы
+    function filterTable() {
+        const classFilter = document.getElementById('classFilter').value;
+        const topicFilter = document.getElementById('topicFilter').value;
+        const rows = document.querySelectorAll('#table_total tbody tr');
+
+        rows.forEach(row => {
+            const classMatch = classFilter === "" || row.getAttribute('data-class') === classFilter;
+            const topicMatch = topicFilter === "" || row.getAttribute('data-topic') === topicFilter;
+
+            if (classMatch && topicMatch) {
+                row.style.display = ''; // Показываем строку
+            } else {
+                row.style.display = 'none'; // Скрываем строку
+            }
+        });
+    }
+
+    // Добавляем обработчики событий для фильтров
+    document.getElementById('classFilter').addEventListener('change', filterTable);
+    document.getElementById('topicFilter').addEventListener('change', filterTable);
+</script>
+
+{% endblock %}

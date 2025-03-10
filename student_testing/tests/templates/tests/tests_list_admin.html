@@ -1,0 +1,87 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Все тесты{% endblock %}
+
+{% block content %}
+
+<h3>Список тестов</h3>
+<table id="table_total">
+    <thead>
+        <th>№</th>
+        <th>Название</th>
+        <th>
+            <label for="classFilter">Класс</label>
+            <select id="classFilter">
+                <option value="">Все</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+            </select>
+        </th>
+        <th>Кол-во вопросов</th>
+        <th>Сдали</th>
+        <th>Статус</th>
+        <th>Действия</th>
+        <th>Создан</th>
+    </thead>
+    <tbody>
+        {% for k, value in data.items %}
+        <tr data-class="{{ value.0.klass_destination }}">
+            <td align="center">
+                {{ forloop.counter }}
+            </td>
+            <td>
+                <a href="{% url 'take_test' value.0.id %}">{{ value.0.title }}</a>
+            </td>
+            <td align="center">
+                {{ value.0.klass_destination }}
+            </td>
+            <td align="center">
+                {{ value.2 }}
+            </td>
+            <td align="center">
+                {{ value.1 }}
+            </td>
+            {% if value.0.repeated_answer %}
+                <td align="center">
+                    <a href="{% url 'test_open_status_update' value.0.id 0 %}">Открыт</a>
+                </td>
+            {% else %}
+                <td align="center">
+                    <a href="{% url 'test_open_status_update' value.0.id 1 %}">Закрыт</a>
+                </td>
+            {% endif %}
+            <td align="center">
+                {% csrf_token %}
+                <a href="{% url 'edit_test' value.0.id %}">Редактировать</a> /
+                <a href="{% url 'delete_test' value.0.id %}">Удалить</a>
+            </td>
+            <td align="center">
+                {{ value.0.time_create_test|date:"d-m-Y H:i" }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+    // Функция для фильтрации таблицы
+    document.getElementById('classFilter').addEventListener('change', function () {
+        const selectedClass = this.value;
+        const rows = document.querySelectorAll('#table_total tbody tr');
+
+        rows.forEach(row => {
+            const rowClass = row.getAttribute('data-class');
+            if (selectedClass === "" || rowClass === selectedClass) {
+                row.style.display = ""; // Показываем строку
+            } else {
+                row.style.display = "none"; // Скрываем строку
+            }
+        });
+    });
+</script>
+
+{% endblock %}

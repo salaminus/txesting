@@ -1,0 +1,20 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Редактор вопросов{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <p>{{ question.text|safe }}</p>
+    <hr>
+    <p>Вы уверены, что хотите удалить этот вопрос?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+        <a href="{% url 'list_questions' %}">Отмена</a>
+    </form>
+</div>
+
+
+{% endblock %}

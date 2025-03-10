@@ -1,0 +1,67 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Результаты тестов{% endblock %}
+
+{% block content %}
+
+
+<h3>Пройденные тесты</h3>
+
+<table id="table_total">
+    <thead>
+        <tr>
+            <th style="width: 3%">№</th>
+            <th style="width: 75%;">Тест</th>
+            <th style="width: 10%">Всего ответов</th>
+            <th style="width: 6%">
+                <label for="classFilter">Класс</label>
+                <select id="classFilter">
+                    <option value="">Все</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                </select>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, value in data.items %}
+        <tr data-class="{{ value.0.klass_destination }}">
+            <td align="center">
+                {{ forloop.counter }}
+            </td>
+            <td>
+                <a href="{% url 'test_students_results' value.0.id %}">{{ value.0.title }}</a>
+            </td>
+            <td align="center">
+                {{ value.1 }}
+            </td>
+            <td align="center">
+                {{ value.0.klass_destination }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+    // Функция для фильтрации таблицы
+   document.getElementById('classFilter').addEventListener('change', function () {
+        const selectedClass = this.value;
+        const rows = document.querySelectorAll('#table_total tbody tr');
+
+        rows.forEach(row => {
+            const rowClass = row.getAttribute('data-class');
+            if (selectedClass === "" || rowClass === selectedClass) {
+                row.style.display = ""; // Показываем строку
+            } else {
+                row.style.display = "none"; // Скрываем строку
+            }
+        });
+    });
+</script>
+
+{% endblock %}

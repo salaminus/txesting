@@ -6,13 +6,14 @@
 
     <h2>Название: {{ test_title }}</h2>
     <h3>Результаты тестирования {{ test_klass }} класса</h3>
-    <table>
+    <table id="table_total">
         <thead>
             <tr>
-                <th>№</th>
-                <th>Учащийся</th>
-                <th>Балл</th>
-                <th>Дата тестирования</th>
+                <th style="width: 3%">№</th>
+                <th style="width: 20%">Учащийся</th>
+                <th style="width: 51%">Баллы</th>
+                <th style="width: 6%">Всего</th>
+                <th style="width: 10%">Дата тестирования</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +21,21 @@
             <tr>
                 <td class="number">{{ forloop.counter }}</td>
                 <td>{{ result.student.username }}</td>
-                <td>{{ result.score }}</td>
-                <td>{{ result.time_answer }}</td>
+                <td>
+                    <table style="margin-bottom: 0%;">
+                        <tbody>
+                        {% for key, value in result.right_answer.items %}
+                            {% if value %}    
+                                <td style="color: green;"><b>{{ forloop.counter }}</b></td>
+                            {% else %}
+                                <td style="color: red;">{{ forloop.counter }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+                <td align="center">{{ result.score }}</td>
+                <td>{{ result.time_answer|date:"d-m-Y H:i" }}</td>
             </tr>
             {% endfor %}
         </tbody>

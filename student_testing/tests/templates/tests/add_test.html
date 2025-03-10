@@ -1,0 +1,83 @@
+{% extends 'tests/base.html' %}
+
+{% block title %}Добавить тест{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Создать тест</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        <table id="table_total">
+            {% for field in test_form %}
+            <tr>    
+                    <td style="width: 20%;">
+                        {{ field.label }}
+                    </td>
+                    <td>
+                         {{ field }}
+                    </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Сохранить</button>
+    </form>
+
+    {% if test_form.instance.id %}
+        <a href="{% url 'add_question' test_form.instance.id %}">Добавить вопрос</a>
+    {% endif %}
+</div>
+
+<div class="container">
+    <h3>В разработке</h3>
+    <table id="table_total">
+        <thead>
+            <th style="width: 3%">№</th>
+            <th>Название</th>
+            <th style="width: 30%;">Действие</th>
+        </thead>
+        <tbody>
+            {% for tmp in tmp_tests %}
+                <tr>
+                    <td align="center">
+                        {{ forloop.counter }}
+                    </td>
+                    <td>
+                        {{ tmp.title }}
+                    </td>
+                    <td align="center">
+                        {% csrf_token %}
+                        <a href="{% url 'edit_test' tmp.id %}">Редактировать</a> /
+                        <a href="{% url 'delete_test' tmp.id %}">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    document.getElementById('id_klass_destination').addEventListener('change', function () {
+        const selectedNumber = this.value;
+        const options = document.querySelectorAll('#id_questions option');
+
+        options.forEach(option => {
+            const text = option.textContent; // Получаем текст опции
+            const match = text.match(/\[(\d+)\]/); // Ищем номер в квадратных скобках
+
+            if (match) {
+                const optionNumber = match[1]; // Извлекаем номер
+                if (selectedNumber === "" || optionNumber === selectedNumber) {
+                    option.style.display = ""; // Показываем опцию
+                } else {
+                    option.style.display = "none"; // Скрываем опцию
+                }
+            } else {
+                option.style.display = ""; // Если нет номера, показываем опцию
+            }
+        });
+    });
+</script>
+
+{% endblock %}
