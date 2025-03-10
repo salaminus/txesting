@@ -2,10 +2,12 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from .CONFIGS_APP import TOPICS, CLASSES, QUESTION_TYPES
+from ckeditor.fields import RichTextField
 
 
 class Question(models.Model):
-    text = models.TextField(verbose_name='Текст') # Название вопроса
+    # text = models.TextField(verbose_name='Текст') # Содержание вопроса
+    text = RichTextField(verbose_name='Текст')
     file = models.URLField(verbose_name='Ссылка на файл', blank=True)
     # theme = models.TextField(default='') # Тема вопроса
     question_type = models.CharField(default='SA', max_length=2, choices=QUESTION_TYPES, verbose_name='Тип вопроса')
@@ -15,7 +17,11 @@ class Question(models.Model):
     topics = models.CharField(max_length=128, default='Txt', choices=TOPICS, verbose_name='Тема')
     
     def __str__(self):
-        return self.text[:20] + '...'
+        import re
+        html_code = self.text
+        text = re.sub(r'<[^>]+>', '', html_code)
+        text = re.sub(r'&[a-zA-Z0-9#]+;', '', text)
+        return text[:130] + '...' + f'[{self.klass_destination}]'
 
 class Test(models.Model):
     title = models.CharField(max_length=200, verbose_name='Название')
@@ -23,7 +29,8 @@ class Test(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     time_create_test = models.DateTimeField(default=datetime.datetime.now(), verbose_name='Создано')
     klass_destination = models.CharField(default='7', max_length=2, choices=CLASSES, verbose_name='Класс')
-    repeated_answer = models.BooleanField(default=True, verbose_name='Повторные ответы')
+    repeated_answer = models.BooleanField(default=False, verbose_name='Повторные ответы')
+    tmp = models.BooleanField(default=True, verbose_name='Без заданий (временный тест)')
 
     def __str__(self):
         return self.title
@@ -38,7 +45,6 @@ class StudentResponse(models.Model):
 
     def __str__(self):
         return f"{self.student.username} - {self.test.title}"
-
 
 
     

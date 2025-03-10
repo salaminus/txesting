@@ -1,11 +1,11 @@
 # tests/forms.py
 from django import forms
-    
+from .models import Question, Test
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 class TestResponseForm(forms.Form):
-    # Здесь мы будем динамически добавлять поля для ответов на вопросы
+    # Здесь динамически добавлятся поля для ответов на вопросы во время тестирования
     def __init__(self, *args, **kwargs):
         questions = kwargs.pop('questions', None)
         super(TestResponseForm, self).__init__(*args, **kwargs)
@@ -20,7 +20,6 @@ class TestResponseForm(forms.Form):
                 )
                 
                 
-
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -31,3 +30,31 @@ class UserRegisterForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(label='Логин')
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    
+
+class TestForm(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = [
+                    'title' , 
+                    'questions', 
+                    'klass_destination', 
+                    'repeated_answer',
+                    'tmp'
+                ]
+    
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = [
+                    'text', 
+                    'file',
+                    'topics',
+                    'question_type', 
+                    'correct_answer',
+                    'klass_destination'
+                ]
+    
+    
