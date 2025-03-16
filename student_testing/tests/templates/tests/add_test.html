@@ -10,13 +10,13 @@
         {% csrf_token %}
         <table id="table_total">
             {% for field in test_form %}
-            <tr>    
-                    <td style="width: 20%;">
-                        {{ field.label }}
-                    </td>
-                    <td>
-                         {{ field }}
-                    </td>
+            <tr>
+                <td style="width: 20%;">
+                    {{ field.label }}
+                </td>
+                <td>
+                    {{ field }}
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -24,7 +24,7 @@
     </form>
 
     {% if test_form.instance.id %}
-        <a href="{% url 'add_question' test_form.instance.id %}">Добавить вопрос</a>
+    <a href="{% url 'add_question' test_form.instance.id %}">Добавить вопрос</a>
     {% endif %}
 </div>
 
@@ -34,23 +34,27 @@
         <thead>
             <th style="width: 3%">№</th>
             <th>Название</th>
+            <th>Класс</th>
             <th style="width: 30%;">Действие</th>
         </thead>
         <tbody>
             {% for tmp in tmp_tests %}
-                <tr>
-                    <td align="center">
-                        {{ forloop.counter }}
-                    </td>
-                    <td>
-                        {{ tmp.title }}
-                    </td>
-                    <td align="center">
-                        {% csrf_token %}
-                        <a href="{% url 'edit_test' tmp.id %}">Редактировать</a> /
-                        <a href="{% url 'delete_test' tmp.id %}">Удалить</a>
-                    </td>
-                </tr>
+            <tr>
+                <td align="center">
+                    {{ forloop.counter }}
+                </td>
+                <td>
+                    {{ tmp.title }}
+                </td>
+                <td>
+                    {{ tmp.klass_destination }}
+                </td>
+                <td align="center">
+                    {% csrf_token %}
+                    <a href="{% url 'edit_test' tmp.id %}">Редактировать</a> /
+                    <a href="{% url 'delete_test' tmp.id %}">Удалить</a>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

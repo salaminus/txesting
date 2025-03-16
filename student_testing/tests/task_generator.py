@@ -97,9 +97,6 @@ class Task:
         self.answer = [w for w in change_names4 if 
                        eval(f"{log1[1]} ('{w[indA1].lower()}' in '{alphabet[alpha_logs.index(alpha1)]}') {log2[1]} {log3[1]} ('{w[indA2].lower()}' in '{alphabet[alpha_logs.index(alpha2)]}')")\
                         == res_value[1]]
-        
-
-
 
     def get_task(self):
         return self.task

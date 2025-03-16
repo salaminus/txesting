@@ -29,7 +29,8 @@ class Test(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     time_create_test = models.DateTimeField(default=datetime.datetime.now(), verbose_name='Создано')
     klass_destination = models.CharField(default='7', max_length=2, choices=CLASSES, verbose_name='Класс')
-    repeated_answer = models.BooleanField(default=False, verbose_name='Повторные ответы')
+    repeated_answer = models.BooleanField(default=False, verbose_name='Разрешена отправка')
+    only_one_answer = models.BooleanField(default=True, verbose_name='Принимать только первый ответ')
     tmp = models.BooleanField(default=True, verbose_name='Без заданий (временный тест)')
 
     def __str__(self):

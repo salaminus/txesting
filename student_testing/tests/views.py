@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import TestForm, TestResponseForm, UserRegisterForm, \
                     UserLoginForm, QuestionForm
 from django.contrib.auth import login, authenticate
+from .quest_hesh_create import calculate_hash
 
 
 @login_required
@@ -13,15 +14,21 @@ def test_list(request):
     student_groups = [gr.name for gr in list(request.user.groups.all())]
     # Отбор тестов по группе ученика
     tests = Test.objects.filter(klass_destination=student_groups[0], tmp=0) 
-    print(tests)
-    status_testing_for_user = StudentResponse.objects.filter(student_id=request.user.id)
-    tests_set = set([item['id'] for item in list(tests.values('id'))])
-    status_set = set([item['test_id'] for item in list(status_testing_for_user.values('test_id'))])
-    status_testing_for_user = tests_set.difference(status_set)
+    # print(tests)
+    # status_testing_for_user = StudentResponse.objects.filter(student_id=request.user.id)
+    # print(status_testing_for_user)
+    # tests_set = set([item['id'] for item in list(tests.values('id'))])
+    # status_set = set([item['test_id'] for item in list(status_testing_for_user.values('test_id'))])
+    # status_testing_for_user = tests_set.difference(status_set)
+    # print(status_testing_for_user)
+    
+    stat_tests_user = StudentResponse.objects.filter(student_id=request.user.id)
+    data = {tst.id: (tst, True if stat_tests_user.filter(test_id=tst.id).exists() and not tst.only_one_answer else False) for tst in tests}
+    print(data)
+    
     
     return render(request, 'tests/test_list.html', {
-                                    'tests': tests,
-                                    'status_testing_for_user': status_testing_for_user
+                                    'data': data,
                                 })
 
 
@@ -59,7 +66,7 @@ def test_open_status_update(request, test_id, status=None):
 def add_test(request):
     if request.method == 'POST':
         test_form = TestForm(request.POST)
-        if test_form.is_valid():
+        if test_form.is_valid() and test_form.cleaned_data['title'] not in [test.title for test in Test.objects.all()]:
             test = test_form.save(commit=False)  # Не сохраняем еще в БД
             test.created_by = request.user  # Устанавливаем текущего пользователя
             test.save()  # Теперь сохраняем в БД
@@ -102,20 +109,35 @@ def delete_test(request, test_id):
 
 @login_required
 def add_question(request, test_id):
-    test = get_object_or_404(Test, id=test_id)
-    # Добавить галочку - создать тест без вопросов, добавить их познее
-    if request.method == 'POST':
-        question_form = QuestionForm(request.POST)
-        if question_form.is_valid():
-            question = question_form.save(commit=False)
-            question.test = test  # Привязываем вопрос к тесту
-            question.save()
-            return redirect('edit_test', test_id=test_id)  # Перенаправление на страницу теста
+    if test_id != 0:
+        test = get_object_or_404(Test, id=test_id)
+        # Добавить галочку - создать тест без вопросов, добавить их познее
+        if request.method == 'POST':
+            question_form = QuestionForm(request.POST)
+            if question_form.is_valid():
+                hesh_quest = calculate_hash(question_form['question'])
+                print(hesh_quest)
+                question = question_form.save(commit=False)
+                question.test = test  # Привязываем вопрос к тесту
+                question.save()
+                return redirect('edit_test', test_id=test_id)  # Перенаправление на страницу теста
+        else:
+            question_form = QuestionForm()
+
+        return render(request, 'tests/add_question.html', {'question_form': question_form, 'test': test})
     else:
-        question_form = QuestionForm()
+        if request.method == 'POST':
+            question_form = QuestionForm(request.POST)
+            if question_form.is_valid() and question_form.cleaned_data['text'] not in [quest.text for quest in Question.objects.all()]:
+                # hesh_quest = calculate_hash(question_form.cleaned_data['text'])
+                # print(hesh_quest)
+                question = question_form.save(commit=False)
+                question.save()
+                return redirect('list_questions')  # Перенаправление на страницу теста
+        else:
+            question_form = QuestionForm()
 
-    return render(request, 'tests/add_question.html', {'question_form': question_form, 'test': test})
-
+        return render(request, 'tests/add_question.html', {'question_form': question_form})
 
 @login_required
 def questions_list_admin(request):
@@ -276,5 +298,12 @@ def test_report(request):
 # TODO: Собрать данные в таблицу: сколько сдано + ссылки на подробности по тестам +++
 # TODO: Функционал создания, редактирования, удаления тестов +++ и вопросов, +++
                                                     # добавление готовых вопросов +++
-# TODO: Генератор заданий на основе шаблонов (МЦКО-7,8,9,10, ЕГЭ-11) ---
-# TODO: Добавить проверку вручную ответов для сложных заданий
+# TODO: Проверка и отсечка добавления теста с уже существующим названием +++
+# TODO: Проверка и отсечка добавления вопроса с уже существующим текстом +++
+# TODO: Добавление картинок и файлов к вопросу (Сейчас - только ссылка на внешний ресурс) ---
+# TODO: Вопрос со вставкой нескольких чисел (ЕГЭ 17, 18, 25, 26, 27) ---
+
+
+# Не актуально:
+# TODO: Генератор заданий на основе шаблонов (МЦКО-7,8,9,10, ЕГЭ-11) +--
+# TODO: Добавить проверку вручную ответов для сложных заданий ---

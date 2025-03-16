@@ -16,7 +16,7 @@
                 <select id="topicFilter">
                     <option value="">Все</option>
                     {% for top in topics %}
-                        <option value="{{ top.0 }}">{{ top.0 }}</option>
+                    <option value="{{ top.0 }}">{{ top.0 }}</option>
                     {% endfor %}
                 </select>
             </th>
@@ -37,33 +37,33 @@
     </thead>
     <tbody>
         {% for quest in data %}
-            <tr data-class="{{ quest.klass_destination }}" data-topic="{{ quest.topics }}">
-                <td align="center">
-                    {{ forloop.counter }}
-                </td>
-                <td>
-                    {{ quest }}
-                </td>
-                <td align="center">
-                    {{ quest.topics }}
-                </td>
-                <td align="center">
-                    {{ quest.question_type }}
-                </td>
-                <td align="center">
-                    {{ quest.klass_destination }}
-                </td>
-                <td align="center">
-                    {% csrf_token %}
-                    <a href="{% url 'edit_question' quest.id %}">Редактировать</a> /
-                    <a href="{% url 'delete_question' quest.id %}">Удалить</a>
-                </td>
-            </tr>
+        <tr data-class="{{ quest.klass_destination }}" data-topic="{{ quest.topics }}">
+            <td align="center">
+                {{ forloop.counter }}
+            </td>
+            <td>
+                {{ quest }}
+            </td>
+            <td align="center">
+                {{ quest.topics }}
+            </td>
+            <td align="center">
+                {{ quest.question_type }}
+            </td>
+            <td align="center">
+                {{ quest.klass_destination }}
+            </td>
+            <td align="center">
+                {% csrf_token %}
+                <a href="{% url 'edit_question' quest.id %}">Редактировать</a> /
+                <a href="{% url 'delete_question' quest.id %}">Удалить</a>
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
 
-
+<a href="{% url 'add_question' 0 %}">Добавить вопрос</a>
 
 <script>
     // Функция для фильтрации таблицы

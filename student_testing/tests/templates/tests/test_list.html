@@ -5,28 +5,28 @@
 {% block content %}
 
 <h3 align="center">Список тестовых заданий</h3>
-<table  style="width: 80%" id="table_total">
+<table style="width: 80%" id="table_total">
     <thead>
         <th>Название</th>
         <th>Статус</th>
     </thead>
     <tbody>
-        {% for test in tests %}
-            <tr>
-                <td>
-                    {% if test.repeated_answer %}
-                        <a href="{% url 'take_test' test.id %}">{{ test.title }}</a>
-                </td>
-                <td align="center">
-                    Открыт
-                    {% else %}
-                    {{ test.title }}
-                </td>
-                <td align="center">
-                        Закрыт
-                    {% endif %}
-                </td>
-            </tr>
+        {% for key, test in data.items %}
+        <tr>
+            <td>
+                {% if test.0.repeated_answer and test.1 %}
+                <a href="{% url 'take_test' test.0.id %}">{{ test.0.title }}</a>
+            </td>
+            <td align="center">
+                Открыт
+                {% else %}
+                {{ test.0.title }}
+            </td>
+            <td align="center">
+                Закрыт
+                {% endif %}
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

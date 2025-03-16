@@ -12,12 +12,16 @@ class TestResponseForm(forms.Form):
         if questions:
             for question in questions:
                 self.fields[f'question_{question.id}'] = forms.CharField(
-                    label={'id': question.id, 
-                           'text': question.text,
-                           'file': question.file},
-                    widget=forms.TextInput(),
-                    # widget=forms.TextInput(attrs={'placeholder': 'Ответ'}),
-                )
+                    label={
+                            'id': question.id, 
+                            'text': question.text,
+                            'file': question.file,
+                            'question_type': question.question_type,
+                        },
+                
+                        widget=forms.TextInput(),
+                        # widget=forms.TextInput(attrs={'placeholder': 'Ответ'}),
+                    )
                 
                 
 class UserRegisterForm(UserCreationForm):
@@ -40,6 +44,7 @@ class TestForm(forms.ModelForm):
                     'questions', 
                     'klass_destination', 
                     'repeated_answer',
+                    'only_one_answer',
                     'tmp'
                 ]
     

@@ -30,15 +30,22 @@
                             <b>{{ forloop.counter }}</b>
                         </td>
                         <td>
-                            <!-- ({{ field.label.id }})  -->
                             {{ field.label.text|safe }}
                             {% if field.label.file %}
-                                <p>
-                                    <a href="{{ field.label.file }}">Файл</a>
-                                </p>
+                            <p>
+                                <a href="{{ field.label.file }}">Файл</a>
+                            </p>
                             {% endif %}
                         </td>
-                        <td class="answer">{{ field }}</td>
+                        <td class="answer">
+                            {% if field.label.question_type == 'MC' %}
+                            <textarea name="question_{{ field.label.id }}" required
+                                id="id_question_{{ field.label.id }}" rows="4" cols="50"
+                                placeholder="Ввести ответы через ;"></textarea>
+                            {% else %}
+                            {{ field }}
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -97,8 +104,9 @@
 
         // Инициализация кнопок
         updateButtons();
-        
+
     </script>
+
 </body>
 
 </html>

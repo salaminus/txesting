@@ -18,22 +18,26 @@
         </thead>
         <tbody>
             {% for question, right_answer in response.right_answer.items %}
-                <tr align="center">
-                    <td>{{ forloop.counter }}</td>
-                    <td>{% if right_answer %}
-                            <b class="b_green">1</b>
-                        {% else %}
-                            <b class="b_red">0</b>
-                        {% endif %}
-                    </td> 
-                </tr>
+            <tr align="center">
+                <td>{{ forloop.counter }}</td>
+                <td>{% if right_answer %}
+                    <b class="b_green">1</b>
+                    {% else %}
+                    <b class="b_red">0</b>
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
     <strong>Набрано:</strong> {{ response.score }} <br>
 </div>
 
+{% if user.is_superuser %}
+<a href="{% url 'tests_list_admin' %}">Вернуться к списку тестов</a>
+{% else %}
 <a href="{% url 'test_list' %}">Вернуться к списку тестов</a>
+{% endif %}
 
 
 {% endblock %}

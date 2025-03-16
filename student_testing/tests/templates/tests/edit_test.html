@@ -30,6 +30,27 @@
 
 </div>
 
+<script>
+    document.getElementById('id_klass_destination').addEventListener('change', function () {
+        const selectedNumber = this.value;
+        const options = document.querySelectorAll('#id_questions option');
 
+        options.forEach(option => {
+            const text = option.textContent; // Получаем текст опции
+            const match = text.match(/\[(\d+)\]/); // Ищем номер в квадратных скобках
+
+            if (match) {
+                const optionNumber = match[1]; // Извлекаем номер
+                if (selectedNumber === "" || optionNumber === selectedNumber) {
+                    option.style.display = ""; // Показываем опцию
+                } else {
+                    option.style.display = "none"; // Скрываем опцию
+                }
+            } else {
+                option.style.display = ""; // Если нет номера, показываем опцию
+            }
+        });
+    });
+</script>
 
 {% endblock %}
