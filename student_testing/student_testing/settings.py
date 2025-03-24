@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-from tests.config_pass import PASSWORD
+from tests.config_pass import PASSWORD, EMAIL_RESIVE
 from django.core.mail import send_mail
 
 
@@ -25,7 +25,7 @@ EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'rabotaem21@yandex.ru'
+EMAIL_HOST_USER = EMAIL_RESIVE
 EMAIL_HOST_PASSWORD = PASSWORD
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
