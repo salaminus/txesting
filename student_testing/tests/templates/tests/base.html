@@ -7,7 +7,7 @@
     <title>{% block title %}Система тестирования{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-    
+
 </head>
 
 <body>
@@ -15,42 +15,42 @@
         <div class="nav-left">
             <a href="{% url 'home' %}">Home</a>
             {% if user.is_authenticated %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'add_test' %}">Редактор тестов</a>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'list_questions' %}">Редактор вопросов</a>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'tests_list_admin' %}">Все тесты</a>
-                {% else %}
-                    <a href="{% url 'test_list' %}">Тесты</a>
-                {% endif %}
-                {% if user.is_superuser %}
-                    <a href="{% url 'tests_all_results_admin' %}">
-                        Результаты тестов
-                    </a>
-                {% else %}
-                    <a href="{% url 'my_tests' %}">
-                        Мои результаты
-                    </a>
-                {% endif %}
+            {% if user.is_superuser %}
+            <a href="{% url 'add_test' %}">Редактор тестов</a>
+            {% endif %}
+            {% if user.is_superuser %}
+            <a href="{% url 'list_questions' %}">Редактор вопросов</a>
+            {% endif %}
+            {% if user.is_superuser %}
+            <a href="{% url 'tests_list_admin' %}">Все тесты</a>
+            {% else %}
+            <a href="{% url 'test_list' %}">Тесты</a>
+            {% endif %}
+            {% if user.is_superuser %}
+            <a href="{% url 'tests_all_results_admin' %}">
+                Результаты тестов
+            </a>
+            {% else %}
+            <a href="{% url 'my_tests' %}">
+                Мои результаты
+            </a>
+            {% endif %}
             {% endif %}
         </div>
         {% if user.is_authenticated %}
-            <div class="nav-right">
-                <a href="#">{{ user.username }}</a>
-                <form method="post" action="{% url 'logout' %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">Выйти</button>
-                </form>
-            </div>
+        <div class="nav-right">
+            <a href="{% url 'user_page' user.id %}">{{ user.username }}</a>
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+        </div>
         {% endif %}
         {% if not user.is_authenticated %}
-            <div class="nav-right">
-                <a href="{% url 'register' %}">Регистрация</a>
-                <a href="{% url 'login' %}">Вход</a>
-            </div>
+        <div class="nav-right">
+            <a href="{% url 'register' %}">Регистрация</a>
+            <a href="{% url 'login' %}">Вход</a>
+        </div>
         {% endif %}
     </div>
 

@@ -6,6 +6,10 @@ from .forms import TestForm, TestResponseForm, UserRegisterForm, \
                     UserLoginForm, QuestionForm
 from django.contrib.auth import login, authenticate
 from .quest_hesh_create import calculate_hash
+from django.contrib.auth.models import User, Group
+
+
+
 
 
 @login_required
@@ -253,6 +257,13 @@ def tests_all_results_admin(request):
         return redirect('login') 
 
 
+@login_required
+def user_page(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    groups = user.groups.all()
+    return render(request, 'tests/user_page.html', {'user': user, 'groups': groups})
+
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -289,7 +300,6 @@ def test_report(request):
 
 
 
-
 # TODO: Проверка, если уже проходил и отключена повторная отправка - закрыть тест +++
 # TODO: Отсечь тесты по классам: чужие тесты убрать из списка тестов +++
 # TODO: WYSYWIG редактор тестов +++
@@ -300,8 +310,9 @@ def test_report(request):
                                                     # добавление готовых вопросов +++
 # TODO: Проверка и отсечка добавления теста с уже существующим названием +++
 # TODO: Проверка и отсечка добавления вопроса с уже существующим текстом +++
-# TODO: Добавление картинок и файлов к вопросу (Сейчас - только ссылка на внешний ресурс) ---
+# TODO: Добавление картинок(вставить из word +++) и файлов к вопросу (Сейчас - только ссылка на внешний ресурс) ---
 # TODO: Вопрос со вставкой нескольких чисел (ЕГЭ 17, 18, 25, 26, 27) ---
+# TODO: Рейтинг учащегося в классе на основе всех результатов по всем тестам ---
 
 
 # Не актуально:

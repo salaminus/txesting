@@ -30,7 +30,7 @@ class Test(models.Model):
     time_create_test = models.DateTimeField(default=datetime.datetime.now(), verbose_name='Создано')
     klass_destination = models.CharField(default='7', max_length=2, choices=CLASSES, verbose_name='Класс')
     repeated_answer = models.BooleanField(default=False, verbose_name='Разрешена отправка')
-    only_one_answer = models.BooleanField(default=True, verbose_name='Принимать только первый ответ')
+    only_one_answer = models.BooleanField(default=True, verbose_name='Многократность ответов')
     tmp = models.BooleanField(default=True, verbose_name='Без заданий (временный тест)')
 
     def __str__(self):

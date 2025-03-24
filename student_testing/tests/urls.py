@@ -4,7 +4,7 @@ from .views import test_list, take_test, test_results, \
                         register, login_view, test_report, test_list_admin, add_test, \
                         test_open_status_update, tests_all_results_admin, \
                         add_question, edit_test, delete_test, questions_list_admin, \
-                        edit_question, delete_question
+                        edit_question, delete_question, user_page
 from django.contrib.auth import views as auth_views
 
 
@@ -30,5 +30,13 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('admin/test-report/', test_report, name='test_report'),
+    path('user_page/<int:user_id>', user_page, name='user_page'),
+    
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    
+    # path('send-email/', send_email, name='send_email'),
 ]
 

@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<h3 align="center">Список тестовых заданий</h3>
-<table style="width: 80%" id="table_total">
+<h3>Список тестовых заданий</h3>
+<table id="table_total">
     <thead>
         <th>Название</th>
         <th>Статус</th>
@@ -14,15 +14,15 @@
         {% for key, test in data.items %}
         <tr>
             <td>
-                {% if test.0.repeated_answer and test.1 %}
+                {% if test.0.repeated_answer and not test.1 %}
                 <a href="{% url 'take_test' test.0.id %}">{{ test.0.title }}</a>
             </td>
-            <td align="center">
+            <td align="center" class="b_green">
                 Открыт
                 {% else %}
                 {{ test.0.title }}
             </td>
-            <td align="center">
+            <td align="center" class="b_red">
                 Закрыт
                 {% endif %}
             </td>
