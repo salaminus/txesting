@@ -4,3 +4,4 @@ student_testing/tests/send_email_test.py
 student_testing/tests/__pycache__
 student_testing/student_testing/__pycache__
 student_testing/tests/migrations
+student_testing/db.sqlite3
