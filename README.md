@@ -11,3 +11,7 @@
 1. source venv/bin/activate
 2. cd student_testing
 3. python3 manage.py runserver IP.IP.IP.IP:8000
+
+
+### Настройка сервера
+1. python3 manage.py createpassword USERNAME [Смена пароля]
