@@ -106,7 +106,8 @@ def delete_test(request, test_id):
     print(f'Тест "{test}" с ID: {test.id} удален.')
     if request.method == 'POST':
         test.delete()
-        return add_test(request)
+        # return add_test(request)
+        return test_list_admin(request)
     
     return render(request, 'tests/delete_test.html', {'test': test})
 
@@ -318,11 +319,11 @@ def test_report(request):
 # NEW:
 # TODO: Регистрация - вывод сообщений о валидации и ее неуспешности ---
 # TODO: В test_students_results - фамилию и имя вместо логина +++
-# TODO: Баг в add_test: при сохранении теста с вопросом не по своему классу ---
+# TODO: Баг в add_test: при сохранении теста с вопросом не по своему классу ??? [Не выявлено]
 # TODO: В список отображения вопросов - добавить колонку со статусом новый и еще не добавлен ---
 # TODO: Функция рандомного наполнения вариантов из банка вопросов по темам ---
 # TODO: Номера заданий в take.html +++
-# TODO: Нижний регистр для систем счисления в редакторе CKEditor ---
+# TODO: Нижний регистр для систем счисления в редакторе CKEditor [ХЗ]
 
 
 # Не актуально:

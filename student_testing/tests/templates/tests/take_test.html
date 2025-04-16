@@ -83,6 +83,15 @@
             nextButton.style.display = currentQuestion < questions.length - 1 ? 'inline' : 'none';
             // submitButton.style.display = currentQuestion === questions.length - 1 ? 'inline' : 'none';
             submitButton.style.display = 'inline';
+
+            // Обновляем выделение кнопок навигации
+            navButtons.forEach((button, index) => {
+                if (index === currentQuestion) {
+                    button.classList.add('active'); // Добавляем класс активной кнопке
+                } else {
+                    button.classList.remove('active'); // Убираем класс у остальных
+                }
+            });
         }
 
         // Функция для проверки ответов

@@ -116,3 +116,9 @@ h1 {
 .django-ckeditor-widget, #id_text, #id_file, #id_correct_answer {
     width: 100%;
 }
+
+
+.question-nav.active {
+    background-color: #007bff; /* Цвет фона для активной кнопки */
+    color: white; /* Цвет текста для активной кнопки */
+}

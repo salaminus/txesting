@@ -20,6 +20,7 @@ class TestResponseForm(forms.Form):
                         },
                 
                         widget=forms.TextInput(),
+                        # required = False
                         # widget=forms.TextInput(attrs={'placeholder': 'Ответ'}),
                     )
                 
