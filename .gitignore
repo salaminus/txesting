@@ -63,3 +63,4 @@ student_testing/student_testing/__pycache__/settings.cpython-312.pyc
 student_testing/student_testing/__pycache__/urls.cpython-312.pyc
 student_testing/student_testing/__pycache__/wsgi.cpython-312.pyc
 student_testing/db.sqlite3
+student_testing/tests/__pycache__/views.cpython-312.pyc

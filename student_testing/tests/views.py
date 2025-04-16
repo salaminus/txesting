@@ -1,12 +1,12 @@
 import pprint
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect # type: ignore
 from .models import Test, StudentResponse, Question
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required # type: ignore
 from .forms import TestForm, TestResponseForm, UserRegisterForm, \
                     UserLoginForm, QuestionForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate # type: ignore
 from .quest_hesh_create import calculate_hash
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group # type: ignore
 
 
 
