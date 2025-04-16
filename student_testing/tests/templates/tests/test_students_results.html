@@ -20,7 +20,13 @@
             {% for result in results %}
             <tr>
                 <td class="number">{{ forloop.counter }}</td>
-                <td>{{ result.student.username }}</td>
+                <td>
+                    {% if result.student.last_name %}
+                        {{ result.student.last_name }} {{ result.student.first_name }}
+                    {% else %}
+                        {{ result.student.username}}
+                    {% endif %}
+                </td>
                 <td>
                     <table style="margin-bottom: 0%;">
                         <tbody>

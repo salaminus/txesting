@@ -15,6 +15,14 @@
     <form method="post">
         {% csrf_token %}
         <div>
+            <div class="navigation-buttons" style="padding: 0.5%;">
+                {% for field in form %}
+                <button type="button" class="question-nav" data-index="{{ forloop.counter0 }}">{{ forloop.counter }}</button>
+                {% endfor %}
+                <button type="submit" style="display: none;" id="submitButton">Завершить</button>
+            </div>
+        </div>
+        <div>
             <table id="table_total">
                 <thead>
                     <tr>
@@ -51,10 +59,13 @@
                 </tbody>
             </table>
         </div>
+
+        
+
         <div class="footer_test">
             <button type="button" id="prevButton" style="display: none;">Назад</button>
             <button type="button" id="nextButton">Далее</button>
-            <button type="submit" style="display: none;" id="submitButton">Отправить ответы</button>
+            
         </div>
     </form>
 
@@ -64,13 +75,35 @@
         const nextButton = document.getElementById('nextButton');
         const prevButton = document.getElementById('prevButton');
         const submitButton = document.getElementById('submitButton');
+        const navButtons = document.querySelectorAll('.question-nav'); // Получаем кнопки навигации
 
         // Функция для обновления видимости кнопок
         function updateButtons() {
             prevButton.style.display = currentQuestion > 0 ? 'inline' : 'none';
             nextButton.style.display = currentQuestion < questions.length - 1 ? 'inline' : 'none';
-            submitButton.style.display = currentQuestion === questions.length - 1 ? 'inline' : 'none';
+            // submitButton.style.display = currentQuestion === questions.length - 1 ? 'inline' : 'none';
+            submitButton.style.display = 'inline';
         }
+
+        // Функция для проверки ответов
+        function checkAnswer() {
+            const answerField = questions[currentQuestion].querySelector('textarea, input'); // Получаем поле ответа
+            const navButton = navButtons[currentQuestion]; // Получаем соответствующую кнопку навигации
+
+            if (answerField && answerField.value.trim() !== '') {
+                navButton.style.backgroundColor = '#00ff55'; // Устанавливаем зеленый цвет, если есть ответ
+            } else {
+                navButton.style.backgroundColor = ''; // Сбрасываем цвет, если ответа нет
+            }
+        }
+
+        // Добавляем обработчик событий для полей ввода
+        questions.forEach(question => {
+            const answerField = question.querySelector('textarea, input'); // Получаем поле ответа
+            if (answerField) {
+                answerField.addEventListener('input', checkAnswer); // Проверяем ответ при вводе
+            }
+        });
 
         nextButton.addEventListener('click', function () {
             // Скрываем текущий вопрос
@@ -85,6 +118,7 @@
             }
 
             updateButtons(); // Обновляем видимость кнопок
+            checkAnswer(); // Проверяем ответ на новом вопросе
         });
 
         prevButton.addEventListener('click', function () {
@@ -100,10 +134,26 @@
             }
 
             updateButtons(); // Обновляем видимость кнопок
+            checkAnswer(); // Проверяем ответ на новом вопросе
+        });
+
+        // Добавляем обработчики событий для кнопок навигации
+        navButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const index = parseInt(this.getAttribute('data-index'));
+                // Скрываем текущий вопрос
+                questions[currentQuestion].classList.add('hidden');
+                currentQuestion = index; // Устанавливаем текущий вопрос на выбранный
+                // Показываем выбранный вопрос
+                questions[currentQuestion].classList.remove('hidden');
+                updateButtons(); // Обновляем видимость кнопок
+                checkAnswer(); // Проверяем ответ на новом вопросе
+            });
         });
 
         // Инициализация кнопок
         updateButtons();
+        checkAnswer(); // Проверяем ответ на новом вопросе
 
     </script>
 
